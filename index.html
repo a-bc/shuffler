@@ -13,9 +13,6 @@
     <section class="page-header">
       <h1 class="project-name">Shufflr</h1>
       <h2 class="project-tagline">simple text shuffler</h2>
-      <a href="https://github.com/a-bc/shuffler" class="btn">View on GitHub</a>
-      <a href="https://github.com/a-bc/shuffler/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/a-bc/shuffler/tarball/master" class="btn">Download .tar.gz</a>
     </section>
 
     <section class="main-content">
@@ -26,10 +23,50 @@
 
 <p>Кодировка — UTF-8.</p>
 
-<p>
 
+<input type="file" id="fileinput">
+<input type="button" id="shuffle" value="Перемешать">
+<input type="button" id="download" value="Скачать">
+<code><pre id="text"></pre></code>
 
-<code><pre id="text"></pre></code></p>
+<script type="text/javascript">
+
+var contents;
+
+function download() {
+    var pom = document.createElement('a');
+    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(contents));
+    pom.setAttribute('download', 'shuffled.txt');
+    pom.style.display = 'none';
+    document.body.appendChild(pom);
+    pom.click();
+    document.body.removeChild(pom);
+}
+
+function shuffle(evt) {
+    var o = contents.split("\n");
+    for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    contents = o.join("\n")
+    document.getElementById('text').innerHTML = contents;
+}
+
+function readSingleFile(evt) {
+    var f = evt.target.files[0];
+
+    if (f) {
+        var r = new FileReader();
+        r.onload = function(e) { contents = e.target.result; shuffle();}
+        r.readAsText(f);
+    } else {
+        alert('Failed to load file');
+    }
+}
+
+document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
+document.getElementById('shuffle').addEventListener('click', shuffle, false);
+document.getElementById('download').addEventListener('click', download, false);
+
+</script>
 
 
 
