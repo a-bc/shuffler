@@ -10,7 +10,7 @@
 <input type="file" id="fileinput">
 <input type="button" id="shuffle" value="Перемешать">
 <input type="button" id="download" value="Скачать">
-<code><pre id="text"></pre></code>
+<pre id="text" style="padding:50px; border:1px solid red;"></pre>
 
 
 <script type="text/javascript">
@@ -20,7 +20,7 @@ var contents;
 function download() {
     var pom = document.createElement('a');
     pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(contents));
-    pom.setAttribute('download', 'shuffled.txt');
+    pom.setAttribute('download', 'shuffld.txt');
     pom.style.display = 'none';
     document.body.appendChild(pom);
     pom.click();
