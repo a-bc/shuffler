@@ -5,8 +5,12 @@
 <body style="font-family:Verdana, sans; color:#111;">
 <h1>Shufflr</h1>
 <p>На этой страничке вы можете перемешать строки вашего файла. Нет ничего проще: открыл, перемешал, скачал. Всё!</p>
-<p>Кодировка — UTF-8.</p>
 
+<select id="encoding">
+    <option value="cp1251">cp1251</option>
+    <option value="utf-8">utf-8</option>
+    <option value="cp866">cp866</option>
+</select>
 <input type="file" id="fileinput">
 <input type="button" id="shuffle" value="Перемешать">
 <input type="button" id="download" value="Скачать">
@@ -16,18 +20,25 @@
 <script type="text/javascript">
 
 var contents;
+var encoding = 'cp1251';
+
+document.getElementById('encoding').selectedIndex = 0;
+
+function change_encoding() {
+    encoding = document.getElementById('encoding').value;
+}
 
 function download() {
     var pom = document.createElement('a');
     pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(contents));
-    pom.setAttribute('download', 'shuffld.txt');
+    pom.setAttribute('download', 'shuffled.txt');
     pom.style.display = 'none';
     document.body.appendChild(pom);
     pom.click();
     document.body.removeChild(pom);
 }
 
-function shuffle(evt) {
+function shuffle() {
     var o = contents.split("\n");
     for (var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
     contents = o.join("\n")
@@ -40,7 +51,7 @@ function readSingleFile(evt) {
     if (f) {
         var r = new FileReader();
         r.onload = function(e) { contents = e.target.result; shuffle();}
-        r.readAsText(f);
+        r.readAsText(f, encoding);
     } else {
         alert('Failed to load file');
     }
@@ -49,6 +60,7 @@ function readSingleFile(evt) {
 document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
 document.getElementById('shuffle').addEventListener('click', shuffle, false);
 document.getElementById('download').addEventListener('click', download, false);
+document.getElementById('encoding').addEventListener('change', change_encoding, false);
 
 </script>
 
